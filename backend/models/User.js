@@ -104,7 +104,7 @@ const userSchema = mongoose.Schema(
       highschool: {
         type: String,
       },
-      collage: {
+      college: {
         type: String,
       },
       currentSity: {
@@ -115,7 +115,7 @@ const userSchema = mongoose.Schema(
       },
       relationship: {
         type: String,
-        enum: ["Single", "in a relationship", "Married", "Divorced"],
+        enum: ["Single", "in a relationship", "Married"],
       },
       instagram: {
         type: String,
