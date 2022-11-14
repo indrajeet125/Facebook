@@ -1,34 +1,37 @@
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Schema.ObjectId;
+
+const { ObjectId } = mongoose.Schema;
+
 const userSchema = mongoose.Schema(
   {
     first_name: {
       type: String,
-      required: [true, "first name is requred"],
+      required: [true, "first name is required"],
       trim: true,
       text: true,
     },
     last_name: {
       type: String,
-      required: [true, "last name is requred"],
+      required: [true, "last name is required"],
       trim: true,
       text: true,
     },
     username: {
       type: String,
-      required: [true, "username is requred"],
+      required: [true, "username is required"],
       trim: true,
       text: true,
       unique: true,
     },
+
     email: {
       type: String,
-      required: [true, "email is requred"],
+      required: [true, "email is required"],
       trim: true,
     },
     password: {
       type: String,
-      required: [true, "password is requred"],
+      required: [true, "password is required"],
     },
     picture: {
       type: String,
@@ -42,7 +45,7 @@ const userSchema = mongoose.Schema(
     },
     gender: {
       type: String,
-      required: [true, "gender is requred"],
+      required: [true, "gender is required"],
       trim: true,
     },
     bYear: {
@@ -92,7 +95,7 @@ const userSchema = mongoose.Schema(
       bio: {
         type: String,
       },
-      othername: {
+      otherName: {
         type: String,
       },
       job: {
@@ -101,13 +104,13 @@ const userSchema = mongoose.Schema(
       workplace: {
         type: String,
       },
-      highschool: {
+      highSchool: {
         type: String,
       },
       college: {
         type: String,
       },
-      currentSity: {
+      currentCity: {
         type: String,
       },
       hometown: {
@@ -115,13 +118,13 @@ const userSchema = mongoose.Schema(
       },
       relationship: {
         type: String,
-        enum: ["Single", "in a relationship", "Married"],
+        enum: ["Single", "In a relationship", "Married", "Divorced"],
       },
       instagram: {
         type: String,
       },
     },
-    savePosts: [
+    savedPosts: [
       {
         post: {
           type: ObjectId,
@@ -138,4 +141,5 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
 module.exports = mongoose.model("User", userSchema);
