@@ -66,9 +66,9 @@ export default function LeftHome({ user }) {
       </div>
       <div className="shortcut_list">
         <Shortcut
-          link="https://www.youtube.com/channel/UCgp23vdLNaUitOkCxxVnRrg"
+          link="https://www.youtube.com/"
           img="../../images/ytb.png"
-          name="my Youtube channel"
+          name="My Youtube channel"
         />
 
         <Shortcut
