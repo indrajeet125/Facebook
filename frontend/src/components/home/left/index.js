@@ -66,13 +66,13 @@ export default function LeftHome({ user }) {
       </div>
       <div className="shortcut_list">
         <Shortcut
-          link="https://www.youtube.com/channel/UCgp23vdLNaUitOkCxxVnRrg"
+          link="https://www.youtube.com/c/MohamedHaJJi1/featured"
           img="../../images/ytb.png"
-          name="my Youtube channel"
+          name="My Youtube channel"
         />
 
         <Shortcut
-          link="https://www.instagram.com/"
+          link="https://www.instagram.com/med_hajji7/"
           img="../../images/insta.png"
           name="My Instagram "
         />
