@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { profileReducer } from "../../functions/reducers";
@@ -14,7 +14,11 @@ import GridPosts from "./GridPosts";
 import Post from "../../components/post";
 import Photos from "./Photos";
 import Friends from "./Friends";
-export default function Profile({ setVisible }) {
+import Intro from "../../components/intro";
+import { useMediaQuery } from "react-responsive";
+import CreatePostPopup from "../../components/createPostPopup";
+export default function Profile({ getAllPosts }) {
+  const [visible, setVisible] = useState(false);
   const { username } = useParams();
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({ ...state }));
@@ -29,7 +33,12 @@ export default function Profile({ setVisible }) {
   useEffect(() => {
     getProfile();
   }, [userName]);
+  useEffect(() => {
+    setOthername(profile?.details?.otherName);
+  }, [profile]);
+
   var visitor = userName === user.username ? false : true;
+  const [othername, setOthername] = useState();
   const path = `${userName}/*`;
   const max = 30;
   const sort = "desc";
@@ -76,16 +85,49 @@ export default function Profile({ setVisible }) {
       });
     }
   };
+  const profileTop = useRef(null);
+  const leftSide = useRef(null);
+  const [height, setHeight] = useState();
+  const [leftHeight, setLeftHeight] = useState();
+  const [scrollHeight, setScrollHeight] = useState();
+  useEffect(() => {
+    setHeight(profileTop.current.clientHeight + 300);
+    setLeftHeight(leftSide.current.clientHeight);
+    window.addEventListener("scroll", getScroll, { passive: true });
+    return () => {
+      window.addEventListener("scroll", getScroll, { passive: true });
+    };
+  }, [loading, scrollHeight]);
+  const check = useMediaQuery({
+    query: "(min-width:901px)",
+  });
+  const getScroll = () => {
+    setScrollHeight(window.pageYOffset);
+  };
   return (
     <div className="profile">
-      <Header page="profile" />
-      <div className="profile_top">
+      {visible && (
+        <CreatePostPopup
+          user={user}
+          setVisible={setVisible}
+          posts={profile?.posts}
+          dispatch={dispatch}
+          profile
+        />
+      )}
+      <Header page="profile" getAllPosts={getAllPosts} />
+      <div className="profile_top" ref={profileTop}>
         <div className="profile_container">
-          <Cover cover={profile.cover} visitor={visitor} />
+          <Cover
+            cover={profile.cover}
+            visitor={visitor}
+            photos={photos.resources}
+          />
           <ProfielPictureInfos
             profile={profile}
             visitor={visitor}
             photos={photos.resources}
+            othername={othername}
           />
           <ProfileMenu />
         </div>
@@ -94,8 +136,22 @@ export default function Profile({ setVisible }) {
         <div className="profile_container">
           <div className="bottom_container">
             <PplYouMayKnow />
-            <div className="profile_grid">
-              <div className="profile_left">
+            <div
+              className={`profile_grid ${
+                check && scrollHeight >= height && leftHeight > 1000
+                  ? "scrollFixed showLess"
+                  : check &&
+                    scrollHeight >= height &&
+                    leftHeight < 1000 &&
+                    "scrollFixed showMore"
+              }`}
+            >
+              <div className="profile_left" ref={leftSide}>
+                <Intro
+                  detailss={profile.details}
+                  visitor={visitor}
+                  setOthername={setOthername}
+                />
                 <Photos
                   username={userName}
                   token={user.token}
